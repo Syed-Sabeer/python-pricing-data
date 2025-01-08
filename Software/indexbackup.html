@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fetch Data</title>
+    <title>Document</title>
 </head>
 <body>
     <input type="text" id="bfw-item-code" placeholder="Enter Code">
@@ -12,14 +12,6 @@
     <div id="data"></div>
 
     <script>
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;")
-                      .replace(/</g, "&lt;")
-                      .replace(/>/g, "&gt;")
-                      .replace(/"/g, "&quot;")
-                      .replace(/'/g, "&#039;");
-        }
-
         function fetchData() {
             const bfwItemCode = document.getElementById('bfw-item-code').value;
 
@@ -31,13 +23,7 @@
             fetch(`/fetch_data?bfw_item_code=${bfwItemCode}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Display both JavaScript and HTML content
-                    document.getElementById('data').innerHTML = `
-                        <h3>JavaScript:</h3>
-                        <pre>${escapeHtml(data.js_code)}</pre>
-                        <h3>HTML Table:</h3>
-                        <pre>${escapeHtml(data.html_code)}</pre>
-                    `;
+                    document.getElementById('data').innerHTML = `<pre>${data.js_code}</pre>`;
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
