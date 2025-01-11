@@ -3,47 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fetch Data</title>
-</head>
-<body>
-    <input type="text" id="bfw-item-code" placeholder="Enter Code">
-    <button onclick="fetchData()">FETCH DATA</button>
-
-    <div id="data"></div>
-
+    <title>Excel Data</title>
     <script>
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;")
-                      .replace(/</g, "&lt;")
-                      .replace(/>/g, "&gt;")
-                      .replace(/"/g, "&quot;")
-                      .replace(/'/g, "&#039;");
-        }
-
         function fetchData() {
-            const bfwItemCode = document.getElementById('bfw-item-code').value;
-
-            if (!bfwItemCode) {
-                alert('Please enter a BFW item code');
-                return;
-            }
-
-            fetch(`/fetch_data?bfw_item_code=${bfwItemCode}`)
+            var bfw_item_code = document.getElementById('bfw_item_code').value;
+            fetch(`/fetch_data?bfw_item_code=${bfw_item_code}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Display both JavaScript and HTML content
-                    document.getElementById('data').innerHTML = `
-                        <h3>JavaScript:</h3>
-                        <pre>${escapeHtml(data.js_code)}</pre>
-                        <h3>HTML Table:</h3>
-                        <pre>${escapeHtml(data.html_code)}</pre>
-                    `;
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    alert('An error occurred');
+                    // Display the JavaScript code as raw text
+                    document.getElementById('js_code').textContent = data.js_code;
+
+                    // Display the HTML code as raw HTML (escaped)
+                    document.getElementById('pwl_html_code').textContent = data.pwl_html_code;
+                    document.getElementById('bb_html_code').textContent = data.bb_html_code;
                 });
         }
     </script>
+</head>
+<body>
+    <h1>Generate Data</h1>
+    <input type="text" id="bfw_item_code" placeholder="Enter BFW Item Code">
+    <button onclick="fetchData()">Fetch Data</button>
+
+    <h3>JavaScript Code:</h3>
+    <pre id="js_code"></pre>
+
+    <h3>PRINTING HTML Table:</h3>
+    <pre id="pwl_html_code"></pre>
+
+    <h3>BLANK HTML Table:</h3>
+    <pre id="bb_html_code"></pre>
 </body>
 </html>
